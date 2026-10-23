@@ -1,8 +1,9 @@
 packages:
   - "packages/*"
 
-# esbuild's postinstall only downloads the platform binary as a fallback;
-# the binary is already provided by the @esbuild/<platform> optional dependency,
-# so the build script is unnecessary and we acknowledge its skip explicitly.
+# esbuild runs a postinstall that verifies/obtains its platform binary. The
+# binary is already provided by the @esbuild/<platform> optional dependency, so
+# the build is effectively a no-op — but we explicitly approve it so `pnpm
+# install` succeeds in non-interactive (CI) environments.
 allowBuilds:
   esbuild: true
