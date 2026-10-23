@@ -1,0 +1,8 @@
+packages:
+  - "packages/*"
+
+# esbuild's postinstall only downloads the platform binary as a fallback;
+# the binary is already provided by the @esbuild/<platform> optional dependency,
+# so the build script is unnecessary and we acknowledge its skip explicitly.
+allowBuilds:
+  esbuild: true

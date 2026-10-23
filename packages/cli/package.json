@@ -1,0 +1,29 @@
+{
+  "name": "@licensify/cli",
+  "version": "0.1.0",
+  "description": "Offline vendor CLI for Licensify: generate Ed25519 keys, sign licenses, and issue/verify node-locked activation keys.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "licensify": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@licensify/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
+  }
+}

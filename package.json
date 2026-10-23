@@ -1,0 +1,24 @@
+{
+  "name": "licensify",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local, offline, anti-reverse-engineering software licensing (Ed25519 + AES-256-GCM + node-locking activation keys).",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r run build",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "pnpm -r run clean"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

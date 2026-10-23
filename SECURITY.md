@@ -1,31 +1,62 @@
 # Security Policy
 
-## Status of this project
+## Modelo de amenaza y alcance
 
-This repository is published **for portfolio and reference purposes only**.
+Licensify ofrece licenciamiento **local/offline**: firma Ed25519 no
+falsificable, node-locking por fingerprint y defensa en profundidad contra
+ingeniería inversa (AES-256-GCM + split-key, anti-tamper, anti-reloj).
 
-The source code is provided "as is", without warranty of any kind. It is not intended for production use, and no license is granted to copy, modify, distribute, or use this code in any form. See the repository root for licensing details.
+**Límite honesto.** Cualquier verificación que corre íntegramente en el cliente
+puede ser vencida por un atacante con recursos (patching, hooking, extracción
+de claves, emulación del fingerprint). Licensify **no promete inviolabilidad**:
+promete elevar el coste del atacante y garantizar la autenticidad de la
+licencia. Para funcionalidad crítica, combina estos checks con controles
+server-side cuando sea viable.
 
-## Reporting a Vulnerability
+## Custodia de la clave privada
 
-If you notice a security issue in the code, you may report it privately.
+- La **clave privada Ed25519** firma licencias. Una filtración permite emitir
+  licencias arbitrarias.
+- Custódiala fuera del repositorio público (variable de entorno, gestor de
+  secretos o HSM). Nunca la commitees.
+- El CLI (`licensify`) admite `env:NAME` para no escribir la privada a disco.
+- Para rotación de claves, incluye un `keyId` en el `LicensePayload` y verifica
+  el `keyId` además de la firma.
 
-**Do not open a public issue or discussion.**
+## Prácticas implementadas
 
-Send details to: **[aleklein23@gmail.com]**
+- **Firma determinista** sobre JSON canónico (claves ordenadas), no sobre la
+  serialización cruda.
+- **Cifrado autenticado** (AES-256-GCM): cualquier bit alterado falla el auth tag.
+- **SALT/IV aleatorios por clave**: no hay texto cifrado correlacionable.
+- **Comparación en tiempo constante** de secretos (`secureCompare`,
+  `timingSafeEqual`).
+- **Fingerprint hasheado** (`SHA-256`): nunca se persiste el identificador crudo
+  de hardware.
+- **Sin dependencias en runtime**: solo módulos `node:*` incorporados.
 
-Please include:
-- A description of the issue
-- Steps to reproduce or affected files
-- Any suggested mitigation (optional)
+## Reportar una vulnerabilidad
 
-## What to expect
+**No abras un issue o discusión público.**
 
-- Acknowledgment of your report within **7 days**.
-- No obligation to fix, patch, or respond beyond acknowledgment.
-- No bug bounty, compensation, or formal disclosure process is offered.
-- Reports that relate to code not intended for real-world use may be closed without action.
+Envía los detalles en privado a: **aleklein23@gmail.com**
 
-## Supported versions
+Incluye:
+- Descripción del problema.
+- Pasos para reproducirlo o archivos afectados.
+- Impacto potencial y mitigación sugerida (opcional).
 
-No version of this project is actively maintained or supported. Security updates are not provided.
+## Qué esperar
+
+- Acuse de recibo en **7 días**.
+- Coordinación de una corrección y un aviso (advisory) cuando proceda.
+- No se ofrece bug bounty.
+
+## Versiones soportadas
+
+| Versión | Soportada |
+| ------- | --------- |
+| 0.1.x   | ✅        |
+
+Las versiones anteriores a `0.1.0` (estado placeholder del repo) no están
+soportadas.
